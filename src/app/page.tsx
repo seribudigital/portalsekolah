@@ -1,65 +1,134 @@
 import Image from "next/image";
+import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { portalQuery } from "@/sanity/lib/queries";
+import { urlForImage } from "@/sanity/lib/image";
+import { PortableText } from "@portabletext/react";
+import { siteConfig } from "@/config/site-config";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { BookOpen, MapPin, Users, Heart, Sparkles, GraduationCap } from "lucide-react";
+import { Metadata } from 'next';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: `Portal Informasi | ${siteConfig.institutionName}`,
+  description: 'Portal resmi informasi pendaftaran, kegiatan, dan berita Al-Khoir Islamic School Bin Baz 5.',
+};
+
+export default async function Home() {
+  const posts = await client.fetch(portalQuery);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-slate-50">
+      {/* Header / Hero */}
+      <header className="relative bg-gradient-to-br from-[#008000] via-[#006400] to-[#b8860b] text-white py-24 px-4 md:px-8 shadow-2xl overflow-hidden">
+        {/* Subtle decorative background pattern */}
+        <div className="absolute inset-0 opacity-10 bg-[url('/pattern.png')] md:bg-cover"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#FFD700] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+
+        <div className="relative max-w-6xl mx-auto flex flex-col items-center text-center gap-8">
+          <div>
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-md">
+              Portal <span className="text-[#FFD700]">Madrasah</span>
+            </h1>
+            <p className="text-lg md:text-2xl text-green-50 max-w-3xl drop-shadow-sm font-medium">
+              Selamat datang di pusat informasi dan administrasi resmi {siteConfig.institutionName}.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-4 w-full md:w-auto">
+            {siteConfig.units.map(unit => (
+              <Link key={unit} href={`/${unit}`} className="bg-white/10 hover:bg-[#FFD700] hover:text-[#008000] border border-white/20 hover:border-transparent backdrop-blur-md transition-all duration-300 ease-in-out px-8 py-4 rounded-2xl font-bold text-xl text-white shadow-lg hover:shadow-2xl hover:-translate-y-1">
+                Unit {unit}
+              </Link>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      {/* Keunggulan / Mengapa Al-Khoir */}
+      <section className="bg-white py-20 px-4 md:px-8 border-b border-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-extrabold text-[#008000] drop-shadow-sm mb-4">Kenapa Memilih {siteConfig.shortName}?</h2>
+            <p className="text-slate-600 text-lg max-w-2xl mx-auto">Membangun generasi rabbani yang berakhlak mulia, berprestasi akademik, dan mandiri.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+              <div className="bg-[#008000]/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#008000] transition-colors">
+                <BookOpen className="w-8 h-8 text-[#008000] group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Kurikulum Tahfidz</h3>
+              <p className="text-slate-600 leading-relaxed">Program hafalan Al-Qur'an terstruktur dengan target yang jelas, dibimbing oleh muhaffizh bersanad.</p>
+            </div>
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+              <div className="bg-[#FFD700]/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#FFD700] transition-colors">
+                <GraduationCap className="w-8 h-8 text-[#b8860b] group-hover:text-amber-900 transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Akademik Berkualitas</h3>
+              <p className="text-slate-600 leading-relaxed">Pendidikan berstandar nasional dipadukan dengan wawasan keislaman yang komprehensif.</p>
+            </div>
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+              <div className="bg-[#008000]/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#008000] transition-colors">
+                <Users className="w-8 h-8 text-[#008000] group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Pembinaan Akhlak</h3>
+              <p className="text-slate-600 leading-relaxed">Fokus pada adab dan karakter berbasis Sunnah di lingkungan sekolah dan asrama.</p>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* Main Content: Portal News */}
+      <main className="max-w-6xl mx-auto py-12 px-4 md:px-8">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold text-slate-800 border-l-4 border-[#FFD700] pl-4">Berita & Informasi Utama</h2>
+          <Link href="/login" className="text-[#008000] hover:text-green-700 font-semibold underline underline-offset-4">
+            Login Admin
+          </Link>
+        </div>
+
+        {posts.length === 0 ? (
+          <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-slate-100">
+            <p className="text-slate-500 text-lg">Belum ada berita yang dipublikasikan saat ini.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post: any) => (
+              <article key={post._id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 flex flex-col group">
+                {post.mainImage && (
+                  <div className="relative h-56 w-full overflow-hidden">
+                    <Image
+                      src={urlForImage(post.mainImage)?.url() || ""}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  </div>
+                )}
+                <div className="p-6 flex flex-col flex-1 relative bg-white">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="bg-gradient-to-r from-[#FFD700] to-[#e6c200] text-amber-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                      Portal Utama
+                    </span>
+                    <span className="text-sm text-slate-500 font-medium">
+                      {post.publishedAt ? format(new Date(post.publishedAt), "d MMM yyyy", { locale: id }) : "Baru saja"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 leading-snug group-hover:text-[#008000] transition-colors">{post.title}</h3>
+                  <div className="text-slate-600 line-clamp-3 text-sm leading-relaxed mb-4">
+                    {post.body ? <PortableText value={post.body} /> : "Tidak ada detail konten untuk saat ini."}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-slate-400 py-8 text-center mt-12">
+        <p>© {new Date().getFullYear()} {siteConfig.institutionName}. Hak Cipta Dilindungi.</p>
+      </footer>
     </div>
   );
 }
