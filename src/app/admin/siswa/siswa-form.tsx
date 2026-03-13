@@ -130,7 +130,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                     <Label>Unit Sekolah</Label>
                     <Select
                         disabled={loading || (currentAdminUnit !== "ALL" && currentAdminUnit !== undefined)}
-                        onValueChange={(val) => setValue("unit", val as SiswaFormValues["unit"])}
+                        onValueChange={(val) => setValue("unit", (val ?? "SD") as SiswaFormValues["unit"])}
                         defaultValue={selectedUnit}
                     >
                         <SelectTrigger>
@@ -149,7 +149,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                     <Label>Kelas</Label>
                     <Select
                         disabled={loading || !selectedUnit}
-                        onValueChange={(val) => setValue("kelas", val)}
+                        onValueChange={(val) => setValue("kelas", val ?? "")}
                         value={watch("kelas")} // Use value instead of defaultValue for dynamic update
                     >
                         <SelectTrigger>
@@ -170,7 +170,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                     <Label>Rombel</Label>
                     <Select
                         disabled={loading}
-                        onValueChange={(val) => setValue("rombel", val)}
+                        onValueChange={(val) => setValue("rombel", val ?? "")}
                         defaultValue={selectedRombel}
                     >
                         <SelectTrigger>
@@ -187,7 +187,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                     <Label>Status</Label>
                     <Select
                         disabled={loading}
-                        onValueChange={(val) => setValue("status", val as SiswaFormValues["status"])}
+                        onValueChange={(val) => setValue("status", (val ?? "AKTIF") as SiswaFormValues["status"])}
                         defaultValue={selectedStatus}
                     >
                         <SelectTrigger>
