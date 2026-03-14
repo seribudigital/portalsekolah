@@ -92,26 +92,68 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
 
     const onSubmit = async (data: SiswaFormValues) => {
         setLoading(true)
+        console.log("--- DEBUG START ---")
+        console.log("Data dari Form:", data)
+        console.log("currentAdminUnit prop:", currentAdminUnit)
+        
         try {
+            const currentUser = auth.currentUser
+            if (!currentUser) {
+                console.error("Auth check failed: No currentUser.")
+                throw new Error("Sesi login tidak ditemukan. Silakan login kembali.")
+            }
+            console.log("Authenticated User UID:", currentUser.uid)
+
+            // Sinkronisasi/Audit Unit (Case Sensitivity)
+            let finalData = { ...data }
+            if (currentAdminUnit && currentAdminUnit !== "ALL" && currentAdminUnit.toUpperCase() === data.unit.toUpperCase()) {
+                if (currentAdminUnit !== data.unit) {
+                    console.log(`Menyesuaikan case unit dari ${data.unit} menjadi ${currentAdminUnit}`)
+                    finalData.unit = currentAdminUnit as any
+                }
+            }
+
             if (initialData?.id) {
-                // Update
+                console.log("Mencoba update dokumen ID:", initialData.id)
                 const ref = doc(db, "siswa", initialData.id)
-                await updateDoc(ref, data)
-                toast.success("Data Siwa Berhasil Diperbarui")
+                await updateDoc(ref, {
+                    ...finalData,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: currentUser.uid
+                })
+                toast.success("Data Siswa Berhasil Diperbarui")
             } else {
-                // Create
-                await addDoc(collection(db, "siswa"), data)
+                console.log("Mencoba tambah dokumen baru ke koleksi 'siswa'")
+                const docRef = await addDoc(collection(db, "siswa"), {
+                    ...finalData,
+                    createdAt: new Date().toISOString(),
+                    createdBy: currentUser.uid
+                })
+                console.log("Dokumen berhasil dibuat dengan ID:", docRef.id)
                 toast.success("Siswa Baru Berhasil Ditambahkan!")
                 reset() // Reset form explicitly
             }
             onSuccess()
         } catch (error: any) {
+            console.error("--- DEBUG ERROR ---")
+            console.error("Firestore Error Code:", error.code)
+            console.error("Firestore Error Message:", error.message)
             console.error(error)
-            toast.error(error.message || "Terjadi kesalahan saat menyimpan data.")
+            
+            let errorMessage = "Terjadi kesalahan saat menyimpan data."
+            if (error.code === "permission-denied") {
+                errorMessage = "Izin ditolak (Permission Denied). Periksa kesesuaian unit atau aturan Firebase."
+            } else if (error.message) {
+                errorMessage = error.message
+            }
+            
+            toast.error(errorMessage)
         } finally {
+            console.log("--- DEBUG END ---")
             setLoading(false)
         }
     }
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
