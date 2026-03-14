@@ -20,6 +20,7 @@ import { SiswaForm } from "./siswa-form"
 import { doc, deleteDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { toast } from "sonner"
+import { triggerRevalidation } from "@/lib/revalidate"
 
 export type Siswa = {
     id: string
@@ -144,6 +145,7 @@ export const columns: ColumnDef<Siswa>[] = [
                 try {
                     await deleteDoc(doc(db, "siswa", siswa.id))
                     toast.success("Data siswa berhasil dihapus")
+                    await triggerRevalidation()
                     setIsDeleteOpen(false)
                     // Refresh via meta if provided
                     if (table.options.meta && (table.options.meta as any).refreshData) {

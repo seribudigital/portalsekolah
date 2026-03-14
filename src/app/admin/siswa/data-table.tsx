@@ -30,6 +30,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { doc, deleteDoc, writeBatch } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { toast } from "sonner"
+import { triggerRevalidation } from "@/lib/revalidate"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
 interface DataTableProps<TData, TValue> {
@@ -117,6 +118,7 @@ export function DataTable<TData, TValue>({
         try {
             await Promise.all(promises);
             toast.success(`${promises.length} data siswa berhasil dihapus secara massal.`);
+            await triggerRevalidation();
             setRowSelection({});
             window.location.reload();
         } catch (error: any) {

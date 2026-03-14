@@ -1,9 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
-import { db } from "@/lib/firebase/firestore";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PublicSiswa {
@@ -13,45 +10,14 @@ interface PublicSiswa {
     status: string;
 }
 
-export function ClientSiswaTable({ unit }: { unit: string }) {
-    const [students, setStudents] = useState<PublicSiswa[]>([]);
-    const [loading, setLoading] = useState(true);
+interface ClientSiswaTableProps {
+    students: PublicSiswa[];
+    unit: string;
+}
+
+export function ClientSiswaTable({ students, unit }: ClientSiswaTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
-
-    useEffect(() => {
-        async function fetchStudents() {
-            try {
-                const q = query(
-                    collection(db, "siswa"),
-                    where("unit", "==", unit)
-                );
-                const snapshot = await getDocs(q);
-                const data = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    namaLengkap: doc.data().namaLengkap,
-                    kelas: doc.data().kelas,
-                    status: doc.data().status === "AKTIF" ? "Aktif" : (doc.data().status || "Aktif")
-                })).sort((a, b) => a.namaLengkap.localeCompare(b.namaLengkap));
-                setStudents(data);
-            } catch (error) {
-                console.error("Error fetching students:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchStudents();
-    }, [unit]);
-
-    if (loading) {
-        return (
-            <div className="space-y-4">
-                {Array.from({ length: 10 }).map((_, i) => (
-                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
-                ))}
-            </div>
-        );
-    }
 
     // Pagination Logic
     const totalPages = Math.ceil(students.length / itemsPerPage);

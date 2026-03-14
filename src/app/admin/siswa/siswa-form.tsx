@@ -14,6 +14,7 @@ import { db, auth } from "@/lib/firebase"
 
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
+import { triggerRevalidation } from "@/lib/revalidate"
 
 
 // Schema Validation
@@ -122,6 +123,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                     updatedBy: currentUser.uid
                 })
                 toast.success("Data Siswa Berhasil Diperbarui")
+                await triggerRevalidation()
             } else {
                 console.log("Mencoba tambah dokumen baru ke koleksi 'siswa'")
                 const docRef = await addDoc(collection(db, "siswa"), {
@@ -131,6 +133,7 @@ export function SiswaForm({ initialData, onSuccess, onCancel, currentAdminUnit }
                 })
                 console.log("Dokumen berhasil dibuat dengan ID:", docRef.id)
                 toast.success("Siswa Baru Berhasil Ditambahkan!")
+                await triggerRevalidation()
                 reset() // Reset form explicitly
             }
             onSuccess()

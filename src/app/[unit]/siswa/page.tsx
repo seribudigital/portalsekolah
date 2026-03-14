@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { siteConfig } from "@/config/site-config";
 import { ClientSiswaTable } from "./ClientSiswaTable";
+import { getSiswaByUnit } from "@/lib/firebase/server-fetchers";
 
 export default async function SiswaPublicPage({ params }: { params: Promise<{ unit: string }> }) {
     const resolvedParams = await params;
@@ -10,6 +11,10 @@ export default async function SiswaPublicPage({ params }: { params: Promise<{ un
     if (!siteConfig.units.includes(unit)) {
         notFound();
     }
+
+    // Fetch data on the server — cached & tagged with 'daftar-siswa'
+    // Only re-fetches when revalidateTag('daftar-siswa') is called from admin
+    const students = await getSiswaByUnit(unit);
 
     return (
         <div className="max-w-5xl mx-auto py-12 px-4">
@@ -23,7 +28,7 @@ export default async function SiswaPublicPage({ params }: { params: Promise<{ un
                 <div className="w-24 h-1 bg-unit-accent mx-auto mt-6 rounded-full"></div>
             </div>
 
-            <ClientSiswaTable unit={unit} />
+            <ClientSiswaTable students={students} unit={unit} />
         </div>
     );
 }

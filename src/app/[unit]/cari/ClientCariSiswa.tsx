@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
-import { db } from "@/lib/firebase/firestore";
-import { Search, Loader2 } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface PublicSiswa {
     id: string;
@@ -12,48 +10,31 @@ interface PublicSiswa {
     status: string;
 }
 
-export function ClientCariSiswa({ unit }: { unit: string }) {
+interface ClientCariSiswaProps {
+    unit: string;
+    allStudents: PublicSiswa[];
+}
+
+export function ClientCariSiswa({ unit, allStudents }: ClientCariSiswaProps) {
     const [searchQuery, setSearchQuery] = useState("");
     const [results, setResults] = useState<PublicSiswa[] | null>(null);
-    const [loading, setLoading] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
 
-    // Client-side quick search (Case insensitive approximation using regex matching if pulling all, but we will fetch all unit students once to allow fast searching, as Firebase case-insensitive search requires specific architectural setups).
-    // Given SD has 240 students, we can safely pull them all and filter locally for a lightning-fast UX.
-    const handleSearch = async (e: React.FormEvent) => {
+    // Pure client-side search — no Firestore reads!
+    // Data is pre-fetched and cached on the server
+    const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (!searchQuery.trim()) return;
 
-        setLoading(true);
         setHasSearched(true);
 
-        try {
-            const q = query(
-                collection(db, "siswa"),
-                where("unit", "==", unit)
-            );
-            const snapshot = await getDocs(q);
+        // Perform case-insensitive local search on pre-fetched data
+        const lowerQuery = searchQuery.toLowerCase().trim();
+        const filtered = allStudents.filter(siswa =>
+            siswa.namaLengkap.toLowerCase().includes(lowerQuery)
+        );
 
-            const allStudentsInUnit = snapshot.docs.map(doc => ({
-                id: doc.id,
-                namaLengkap: doc.data().namaLengkap,
-                kelas: doc.data().kelas,
-                status: doc.data().status === "AKTIF" ? "Aktif" : (doc.data().status || "Aktif")
-            }));
-
-            // Perform case-insensitive local search
-            const lowerQuery = searchQuery.toLowerCase().trim();
-            const filtered = allStudentsInUnit.filter(siswa =>
-                siswa.namaLengkap.toLowerCase().includes(lowerQuery)
-            );
-
-            setResults(filtered);
-        } catch (error) {
-            console.error("Error searching students:", error);
-            setResults([]);
-        } finally {
-            setLoading(false);
-        }
+        setResults(filtered);
     };
 
     return (
@@ -73,14 +54,14 @@ export function ClientCariSiswa({ unit }: { unit: string }) {
                 </div>
                 <button
                     type="submit"
-                    disabled={loading || !searchQuery.trim()}
+                    disabled={!searchQuery.trim()}
                     className="absolute right-2 px-6 py-2.5 bg-unit-primary text-white font-semibold rounded-full hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed transition-all"
                 >
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Cari"}
+                    Cari
                 </button>
             </form>
 
-            {hasSearched && !loading && results && (
+            {hasSearched && results && (
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                     <div className="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
                         <h3 className="font-semibold text-slate-800">Hasil Pencarian</h3>
