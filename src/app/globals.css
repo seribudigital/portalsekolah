@@ -47,6 +47,33 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-unit-primary: var(--unit-primary);
   --color-unit-accent: var(--unit-accent);
+
+  --animate-slow-zoom: slow-zoom 20s infinite alternate linear;
+  --animate-blob: blob 7s infinite;
+
+  @keyframes slow-zoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
 }
 
 :root {

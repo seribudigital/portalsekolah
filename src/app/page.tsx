@@ -21,12 +21,25 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header / Hero */}
-      <header className="relative bg-gradient-to-br from-[#008000] via-[#006400] to-[#b8860b] text-white py-24 px-4 md:px-8 shadow-2xl overflow-hidden">
-        {/* Subtle decorative background pattern */}
-        <div className="absolute inset-0 opacity-10 bg-[url('/pattern.png')] md:bg-cover"></div>
+      <header className="relative min-h-[65vh] flex items-center justify-center text-white py-24 px-4 md:px-8 shadow-2xl overflow-hidden">
+        {/* Background Image */}
+        <Image 
+          src="/heroportal.jpeg" 
+          alt="School Hero" 
+          fill 
+          priority 
+          className="object-cover object-center scale-105 animate-slow-zoom"
+        />
+        
+        {/* Multi-layered overlay for premium feel and text legibility */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#008000]/40 via-transparent to-[#b8860b]/40"></div>
+        
+        {/* Decorative elements */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#FFD700] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
 
-        <div className="relative max-w-6xl mx-auto flex flex-col items-center text-center gap-8">
+        <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center gap-8">
           <div>
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-md">
               Portal <span className="text-[#FFD700]">Madrasah</span>
