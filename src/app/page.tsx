@@ -7,8 +7,10 @@ import { PortableText } from "@portabletext/react";
 import { siteConfig } from "@/config/site-config";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { BookOpen, MapPin, Users, Heart, Sparkles, GraduationCap } from "lucide-react";
+import { BookOpen, Users, GraduationCap } from "lucide-react";
 import { Metadata } from 'next';
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: `Portal Informasi | ${siteConfig.institutionName}`,
@@ -20,6 +22,9 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Sticky Navbar */}
+      <Navbar />
+
       {/* Header / Hero */}
       <header className="relative min-h-[65vh] flex items-center justify-center text-white py-24 px-4 md:px-8 shadow-2xl overflow-hidden">
         {/* Background Image */}
@@ -92,12 +97,9 @@ export default async function Home() {
       </section>
 
       {/* Main Content: Portal News */}
-      <main className="max-w-6xl mx-auto py-12 px-4 md:px-8">
+      <main id="berita" className="max-w-6xl mx-auto py-12 px-4 md:px-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-slate-800 border-l-4 border-[#FFD700] pl-4">Berita & Informasi Utama</h2>
-          <Link href="/login" className="text-[#008000] hover:text-green-700 font-semibold underline underline-offset-4">
-            Login Admin
-          </Link>
         </div>
 
         {posts.length === 0 ? (
@@ -138,10 +140,8 @@ export default async function Home() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-8 text-center mt-12">
-        <p>© {new Date().getFullYear()} {siteConfig.institutionName}. Hak Cipta Dilindungi.</p>
-      </footer>
+      {/* Professional Footer */}
+      <Footer />
     </div>
   );
 }

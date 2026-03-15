@@ -5,7 +5,18 @@ export const siteConfig = {
         primary: "#008000",
         secondary: "#FFD700"
     },
-    units: ["TK", "SD", "MTS", "MA"]
+    units: ["TK", "SD", "MTS", "MA"],
+    contact: {
+        address: "Jl. Contoh Alamat Sekolah No. 123, Kota, Provinsi",
+        phone: "+62 812-3456-7890",
+        whatsapp: "6281234567890",
+        email: "info@alkhoir.sch.id",
+    },
+    socials: {
+        instagram: "https://instagram.com/alkhoirislamicschool",
+        facebook: "https://facebook.com/alkhoirislamicschool",
+        youtube: "https://youtube.com/@alkhoirislamicschool",
+    },
 };
 
 export const UNIT_THEMES = {

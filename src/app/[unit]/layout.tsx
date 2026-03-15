@@ -4,6 +4,8 @@ import { siteConfig, UNIT_THEMES } from "@/config/site-config";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import { SubNavbar } from "@/components/layout/SubNavbar";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 export async function generateMetadata({ params }: { params: Promise<{ unit: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
@@ -42,6 +44,9 @@ export default async function UnitLayout({
                 '--unit-accent': theme.accent,
             } as React.CSSProperties}
         >
+            {/* Sticky Navbar */}
+            <Navbar />
+
             {/* Header / Hero */}
             <header className="relative bg-unit-primary text-white py-12 md:py-16 px-4 overflow-hidden shrink-0">
                 {/* Subtle decorative background pattern */}
@@ -70,13 +75,8 @@ export default async function UnitLayout({
                 {children}
             </main>
 
-            {/* Footer */}
-            <footer className="bg-slate-900 border-t-4 border-unit-primary text-slate-400 py-8 text-center shrink-0 relative">
-                <p>© {new Date().getFullYear()} {siteConfig.institutionName} - Unit {unit}.</p>
-                <Link href="/login" className="absolute bottom-4 right-4 text-[10px] text-slate-800 hover:text-slate-600 transition-colors opacity-50">
-                    admin access
-                </Link>
-            </footer>
+            {/* Professional Footer */}
+            <Footer />
         </div>
     );
 }
