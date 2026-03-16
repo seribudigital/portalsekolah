@@ -33,22 +33,22 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="relative z-20 -mt-12 md:-mt-16 pb-20">
+    <section className="relative z-20 -mt-8 md:-mt-12 pb-16">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {stats.map((item, index) => (
             <div 
               key={index} 
-              className="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex flex-col items-center text-center group hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="bg-white p-5 md:p-6 rounded-xl shadow-lg border border-slate-100 flex flex-col items-center text-center group hover:shadow-xl transition-all duration-300"
             >
-              <div className={`${item.bgColor} w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                <item.icon className={`w-6 h-6 md:w-7 md:h-7 ${item.color}`} />
+              <div className={`${item.bgColor} w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                <item.icon className={`w-5 h-5 md:w-6 md:h-6 ${item.color}`} />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
+              <div className="space-y-0.5">
+                <h3 className="text-lg md:text-xl font-extrabold text-slate-900 tracking-tight">
                   {item.value}
                 </h3>
-                <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-widest">
+                <p className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">
                   {item.label}
                 </p>
               </div>
@@ -59,3 +59,4 @@ export function Stats() {
     </section>
   );
 }
+
