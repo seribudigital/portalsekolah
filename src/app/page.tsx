@@ -11,6 +11,9 @@ import { BookOpen, Users, GraduationCap } from "lucide-react";
 import { Metadata } from 'next';
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { Hero } from "@/components/home/Hero";
+import { Stats } from "@/components/home/Stats";
+
 
 export const metadata: Metadata = {
   title: `Portal Informasi | ${siteConfig.institutionName}`,
@@ -25,43 +28,12 @@ export default async function Home() {
       {/* Sticky Navbar */}
       <Navbar />
 
-      {/* Header / Hero */}
-      <header className="relative min-h-[65vh] flex items-center justify-center text-white py-24 px-4 md:px-8 shadow-2xl overflow-hidden">
-        {/* Background Image */}
-        <Image 
-          src="/heroportal.jpeg" 
-          alt="School Hero" 
-          fill 
-          priority 
-          className="object-cover object-center scale-105 animate-slow-zoom"
-        />
-        
-        {/* Multi-layered overlay for premium feel and text legibility */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-black/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#008000]/40 via-transparent to-[#b8860b]/40"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#FFD700] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+      {/* Hero Section */}
+      <Hero />
 
-        <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center gap-8">
-          <div>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-md">
-              Portal <span className="text-[#FFD700]">Madrasah</span>
-            </h1>
-            <p className="text-lg md:text-2xl text-green-50 max-w-3xl drop-shadow-sm font-medium">
-              Selamat datang di pusat informasi dan administrasi resmi {siteConfig.institutionName}.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-4 w-full md:w-auto">
-            {siteConfig.units.map(unit => (
-              <Link key={unit} href={`/${unit}`} className="bg-white/10 hover:bg-[#FFD700] hover:text-[#008000] border border-white/20 hover:border-transparent backdrop-blur-md transition-all duration-300 ease-in-out px-8 py-4 rounded-2xl font-bold text-xl text-white shadow-lg hover:shadow-2xl hover:-translate-y-1">
-                Unit {unit}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </header>
+      {/* Stats Section */}
+      <Stats />
+
 
       {/* Keunggulan / Mengapa Al-Khoir */}
       <section className="bg-white py-20 px-4 md:px-8 border-b border-slate-100">
