@@ -5,50 +5,50 @@ const stats = [
     label: 'Santri',
     value: '1.200+',
     icon: Users,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-500/10',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
   },
   {
     label: 'Guru',
     value: '50+',
     icon: GraduationCap,
-    color: 'text-indigo-500',
-    bgColor: 'bg-indigo-500/10',
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
   },
   {
     label: 'Akreditasi',
     value: 'A',
     icon: Award,
-    color: 'text-emerald-500',
-    bgColor: 'bg-emerald-500/10',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50',
   },
   {
     label: 'Ekskul',
     value: '25+',
     icon: Trophy,
-    color: 'text-amber-500',
-    bgColor: 'bg-amber-500/10',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
   },
 ];
 
 export function Stats() {
   return (
-    <section className="relative z-20 -mt-24 md:-mt-32 pb-16">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+    <section className="relative z-20 -mt-12 md:-mt-16 pb-20">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {stats.map((item, index) => (
             <div 
               key={index} 
-              className="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center group hover:border-blue-500/20 transition-all duration-300"
+              className="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex flex-col items-center text-center group hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <div className={`${item.bgColor} w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                <item.icon className={`w-7 h-7 md:w-8 md:h-8 ${item.color}`} />
+              <div className={`${item.bgColor} w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <item.icon className={`w-6 h-6 md:w-7 md:h-7 ${item.color}`} />
               </div>
               <div className="space-y-1">
-                <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+                <h3 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
                   {item.value}
                 </h3>
-                <p className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wider">
+                <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-widest">
                   {item.label}
                 </p>
               </div>
