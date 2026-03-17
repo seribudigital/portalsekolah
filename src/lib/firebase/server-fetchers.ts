@@ -15,16 +15,16 @@ export interface PublicSiswa {
 export const getSiswaByUnit = unstable_cache(
     async (unit: string): Promise<PublicSiswa[]> => {
         try {
-            // Dynamically import to avoid build-time crashes if env vars are missing
-            const { getAdminDb } = await import("./admin");
-            const adminDb = getAdminDb();
-            const snapshot = await adminDb
-                .collection("siswa")
-                .where("unit", "==", unit)
-                .get();
+            // Import client SDK
+            const { db } = await import("./index");
+            const { collection, getDocs, query, where } = await import("firebase/firestore");
+            
+            const q = query(collection(db, "siswa"), where("unit", "==", unit));
+            const snapshot = await getDocs(q);
 
-            const students: PublicSiswa[] = snapshot.docs
-                .map((doc) => ({
+            const students: PublicSiswa[] = [];
+            snapshot.forEach((doc) => {
+                students.push({
                     id: doc.id,
                     namaLengkap: doc.data().namaLengkap as string,
                     kelas: doc.data().kelas as string,
@@ -32,12 +32,12 @@ export const getSiswaByUnit = unstable_cache(
                         doc.data().status === "AKTIF"
                             ? "Aktif"
                             : (doc.data().status as string) || "Aktif",
-                }))
-                .sort((a, b) => a.namaLengkap.localeCompare(b.namaLengkap));
+                });
+            });
 
-            return students;
+            return students.sort((a, b) => a.namaLengkap.localeCompare(b.namaLengkap));
         } catch (error) {
-            console.error("[getSiswaByUnit] Firebase Admin error:", error);
+            console.error("[getSiswaByUnit] Firebase Client error:", error);
             // Return empty array instead of crashing the page
             return [];
         }
