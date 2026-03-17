@@ -57,13 +57,12 @@ function initAdmin(): Firestore {
         throw new Error(`[Firebase Admin] ${issues.length} configuration error(s). Check Vercel logs for details.`);
     }
 
-    // Process escaped newlines (Vercel stores \\n as literal, need actual \n)
-    const processedKey = privateKey!.replace(/\\n/g, "\n");
-
+    // Process escaped newlines — Vercel/dotenv stores \n as literal "\\n",
+    // which causes "DECODER routines::unsupported" if not converted to real newlines.
     const serviceAccount: ServiceAccount = {
         projectId: projectId!,
         clientEmail: clientEmail!,
-        privateKey: processedKey,
+        privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n') || '',
     };
 
     try {
