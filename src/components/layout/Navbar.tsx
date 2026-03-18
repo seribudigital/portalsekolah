@@ -25,11 +25,21 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unitDropdownOpen, setUnitDropdownOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Listen for navbar toggle events from SubNavbar
+  useEffect(() => {
+    const handleToggle = (e: any) => {
+      setIsHidden(e.detail.hide);
+    };
+    window.addEventListener("navbar-toggle", handleToggle as EventListener);
+    return () => window.removeEventListener("navbar-toggle", handleToggle as EventListener);
   }, []);
 
   // Close mobile menu on resize to desktop
@@ -50,7 +60,9 @@ export function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+          isHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+        } ${
           scrolled
             ? "bg-white/85 backdrop-blur-xl shadow-lg shadow-black/5 border-b border-slate-200/50"
             : "bg-white/60 backdrop-blur-md"
