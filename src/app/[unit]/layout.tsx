@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteConfig, UNIT_THEMES } from "@/config/site-config";
-import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import { SubNavbar } from "@/components/layout/SubNavbar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { UnitHero } from "@/components/layout/UnitHero";
 
 export async function generateMetadata({ params }: { params: Promise<{ unit: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
@@ -38,41 +37,28 @@ export default async function UnitLayout({
 
     return (
         <div
-            className="min-h-screen bg-slate-50 flex flex-col"
+            className="min-h-screen bg-slate-50 flex flex-col font-sans"
             style={{
                 '--unit-primary': theme.primary,
                 '--unit-accent': theme.accent,
             } as React.CSSProperties}
         >
-            {/* Sticky Navbar */}
+            {/* Sticky Navbar Utama */}
             <Navbar />
 
-            {/* Header / Hero */}
-            <header className="relative bg-unit-primary text-white py-12 md:py-16 px-4 overflow-hidden shrink-0">
-                {/* Subtle decorative background pattern */}
-                <div className="absolute inset-0 opacity-10 bg-[url('/pattern.png')] md:bg-cover"></div>
-                <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-unit-accent rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            {/* Dynamic Unit Hero with Glassmorphism Overlay & Breadcrumbs */}
+            <UnitHero unit={unit} />
 
-                <div className="relative max-w-5xl mx-auto">
-                    <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-6 md:mb-8 transition font-medium backdrop-blur-sm bg-black/10 px-4 py-2 rounded-full text-sm">
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Kembali ke Portal Utama
-                    </Link>
-                    <h1 className="text-4xl md:text-6xl font-extrabold mb-3 md:mb-4 tracking-tight drop-shadow-md">
-                        Unit <span className="text-unit-accent">{unit}</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-white/90 max-w-2xl drop-shadow-sm font-medium">
-                        Seputar Informasi dan Administrasi Terpadu.
-                    </p>
-                </div>
-            </header>
-
-            {/* Sub-Navbar (Client Component with horizontal scroll on mobile) */}
+            {/* Sub-Navbar Unit (Sticky under Main Navbar) */}
             <SubNavbar unit={unit} />
 
-            {/* Main Content Area */}
-            <main className="flex-grow w-full">
-                {children}
+            {/* Main Content Area with consistent container */}
+            <main className="flex-grow w-full py-8 md:py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        {children}
+                    </div>
+                </div>
             </main>
 
             {/* Professional Footer */}
