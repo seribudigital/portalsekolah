@@ -91,13 +91,24 @@ export function Navbar() {
                   }}
                 />
               </div>
-              <div className="hidden sm:block">
-                <p className="text-sm font-bold text-slate-800 leading-tight tracking-tight">
+              {/* School/Foundation Name (Responsive) */}
+              <div className="flex flex-col justify-center">
+                <p className="text-sm sm:text-base font-bold text-slate-800 leading-tight tracking-tight sm:block hidden">
                   {siteConfig.shortName}
                 </p>
-                <p className="text-[10px] text-slate-500 font-medium">
+                <p className="text-[10px] text-slate-500 font-medium hidden sm:block">
                   Islamic School
                 </p>
+                
+                {/* Mobile Specific Branding */}
+                <div className="sm:hidden flex flex-col">
+                  <p className="text-xs font-bold text-slate-800 leading-tight">
+                    {siteConfig.foundationName}
+                  </p>
+                  <p className="text-[9px] text-[#008000] font-bold">
+                    {siteConfig.shortName}
+                  </p>
+                </div>
               </div>
             </Link>
 
